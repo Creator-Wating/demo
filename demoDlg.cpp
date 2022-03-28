@@ -65,7 +65,9 @@ BEGIN_MESSAGE_MAP(CdemoDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON1, &CdemoDlg::OnBnClickedButton1)
+	ON_STN_CLICKED(pic, &CdemoDlg::OnStnClickedpic)
+	ON_BN_CLICKED(IDC_OpenCam, &CdemoDlg::OnBnClickedOpencam)
+	ON_BN_CLICKED(IDC_CloseCam, &CdemoDlg::OnBnClickedClosecam)
 END_MESSAGE_MAP()
 
 
@@ -156,7 +158,20 @@ HCURSOR CdemoDlg::OnQueryDragIcon()
 
 
 
-void CdemoDlg::OnBnClickedButton1()
+
+void CdemoDlg::OnStnClickedpic()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CdemoDlg::OnBnClickedOpencam()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CdemoDlg::OnBnClickedClosecam()
 {
 	// TODO: 在此添加控件通知处理程序代码
 }
