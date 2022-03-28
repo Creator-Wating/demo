@@ -51,4 +51,5 @@ public:
 	afx_msg void OnStnClickedpic();
 	afx_msg void OnBnClickedOpencam();
 	afx_msg void OnBnClickedClosecam();
+	afx_msg void OnBnClickedStartgrab();
 };

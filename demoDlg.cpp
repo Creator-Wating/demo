@@ -13,6 +13,8 @@
 #endif
 
 
+
+
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialogEx
@@ -70,6 +72,7 @@ BEGIN_MESSAGE_MAP(CdemoDlg, CDialogEx)
 	ON_STN_CLICKED(pic, &CdemoDlg::OnStnClickedpic)
 	ON_BN_CLICKED(IDC_OpenCam, &CdemoDlg::OnBnClickedOpencam)
 	ON_BN_CLICKED(IDC_CloseCam, &CdemoDlg::OnBnClickedClosecam)
+	ON_BN_CLICKED(IDC_StartGrab, &CdemoDlg::OnBnClickedStartgrab)
 END_MESSAGE_MAP()
 
 
@@ -185,7 +188,6 @@ void CdemoDlg::OnStnClickedpic()
 
 void CdemoDlg::OnBnClickedOpencam()
 {
-	// TODO: 在此添加控件通知处理程序代码
 	int nCams = 0;
 	MVGetNumOfCameras(&nCams);
 	if( nCams == 0 )
@@ -220,4 +222,56 @@ void CdemoDlg::OnBnClickedOpencam()
 void CdemoDlg::OnBnClickedClosecam()
 {
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+void CdemoDlg::DrawImage()
+{
+	CRect rct;
+	GetDlgItem(pic)->GetClientRect(&rct);
+	int dstW = rct.Width();
+	int dstH = rct.Height();
+
+	CDC* pDC = GetDlgItem(pic)->GetDC();
+	{
+		pDC->SetStretchBltMode(COLORONCOLOR);
+		m_image.Draw(pDC->GetSafeHdc(), 0, 0, dstW, dstH);
+	}
+
+	ReleaseDC(pDC);
+}
+
+int CdemoDlg::OnStreamCB(MV_IMAGE_INFO* pInfo)
+
+{
+	MVInfo2Image(m_hCam, pInfo, &m_image);
+	DrawImage();
+	return 0;
+}
+
+int __stdcall StreamCB(MV_IMAGE_INFO* pInfo, ULONG_PTR nUserVal)
+{
+	CdemoDlg* pDlg = (CdemoDlg*)nUserVal;
+	return (pDlg-> OnStreamCB(pInfo));
+}
+
+
+void CdemoDlg::OnBnClickedStartgrab()
+{
+
+	TriggerModeEnums enumMode;
+	MVGetTriggerMode(m_hCam, &enumMode);
+	if (enumMode != TriggerMode_Off)
+	{
+		MVSetTriggerMode(m_hCam, TriggerMode_Off);
+		Sleep(100);
+	}
+
+	MVStartGrab(m_hCam, MVStreamCB(StreamCB), (ULONG_PTR)this);
+	m_bRun = true;
+	GetDlgItem(IDC_OpenCam)->EnableWindow(false);
+	GetDlgItem(IDC_StartGrab)->EnableWindow(false);
+	GetDlgItem(IDC_CloseCam)->EnableWindow(true);
+
+	
+	
 }
