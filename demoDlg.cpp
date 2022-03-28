@@ -52,6 +52,8 @@ END_MESSAGE_MAP()
 
 CdemoDlg::CdemoDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_DEMO_DIALOG, pParent)
+	,m_bRun(FALSE)
+	,m_hCam(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -103,6 +105,22 @@ BOOL CdemoDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	MVSTATUS_CODES r;
+	r = MVInitLib();
+	if (r!= MVST_SUCCESS)
+	{
+		MessageBox(_T("函数库初始化失败！"), _T("提示 "), MB_ICONWARNING);
+		return TRUE;
+	}
+	r = MVUpdateCameraList();
+	if (r != MVST_SUCCESS)
+	{
+		MessageBox(_T("查找连接计算机的相机失败！"),_T("提示"),MB_ICONWARNING);
+	}
+	GetDlgItem(IDC_OpenCam)->EnableWindow(true);
+	GetDlgItem(IDC_StartGrab)->EnableWindow(false);
+	GetDlgItem(IDC_CloseCam)->EnableWindow(false);
+
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
