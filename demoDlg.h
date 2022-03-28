@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "MVGigE.h"
+#include "MVImage.h"
 
 
 // CdemoDlg 对话框
