@@ -219,10 +219,6 @@ void CdemoDlg::OnBnClickedOpencam()
 }
 
 
-void CdemoDlg::OnBnClickedClosecam()
-{
-	// TODO: 在此添加控件通知处理程序代码
-}
 
 void CdemoDlg::DrawImage()
 {
@@ -275,3 +271,25 @@ void CdemoDlg::OnBnClickedStartgrab()
 	
 	
 }
+
+void CdemoDlg::OnBnClickedClosecam()
+{
+	MVStopGrab(m_hCam);
+	MVCloseCam(m_hCam);
+	m_bRun = false;
+	GetDlgItem(IDC_OpenCam)->EnableWindow(true);
+	GetDlgItem(IDC_StartGrab)->EnableWindow(false);
+	GetDlgItem(IDC_CloseCam)->EnableWindow(false);
+}
+
+void CdemoDlg::OnClose()
+{
+	if(m_bRun != false)
+	{
+		MVStopGrab(m_hCam);
+	}
+
+	MVTerminateLib();
+	CDialog::OnClose();
+}
+
