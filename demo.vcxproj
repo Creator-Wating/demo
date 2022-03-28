@@ -76,6 +76,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files\Microvision\E_EM\SDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Microvision\E_EM\SDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -96,6 +98,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>MVCamProptySheet.lib;MVGigE.lib;MVTickDlg.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Program Files\Microvision\E_EM\SDK\bin</AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
