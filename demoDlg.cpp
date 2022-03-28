@@ -186,6 +186,34 @@ void CdemoDlg::OnStnClickedpic()
 void CdemoDlg::OnBnClickedOpencam()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	int nCams = 0;
+	MVGetNumOfCameras(&nCams);
+	if( nCams == 0 )
+	{
+		MessageBox(_T("没有找到相机，请确认连接和相机IP设置"),_T("提示"),MB_ICONWARNING);
+		return;
+	}
+
+	MVSTATUS_CODES r = MVOpenCamByIndex(0,&m_hCam);
+	if (m_hCam == NULL)
+	{
+		if (r == MVST_ACCESS_DENIED)
+		{
+			MessageBox(_T("无法打开相机，可能正在被别的软件控制"),_T("提示"),MB_ICONWARNING);
+		}
+		else
+			MessageBox(_T("无法打开相机"),_T("提示"),MB_ICONWARNING);
+		return;
+	}
+
+	int w,h;
+	MVGetWidth(m_hCam,&w);
+	MVGetHeight(m_hCam,&h);
+	MVGetPixelFormat(m_hCam,&m_PixelFormat);
+	m_image.CreateByPixelFormat(w,h,m_PixelFormat);
+	GetDlgItem(IDC_OpenCam)->EnableWindow(false);
+	GetDlgItem(IDC_StartGrab)->EnableWindow(true);
+	GetDlgItem(IDC_CloseCam)->EnableWindow(false);
 }
 
 
